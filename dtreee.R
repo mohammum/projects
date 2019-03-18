@@ -1,0 +1,30 @@
+setwd("C:/Users/mohammum/Desktop/P1")
+getwd()
+sbl<-read.csv("Buyable1.csv")
+sbl1<-sbl[,3:11]
+summary(sbl)
+boxplot(sbl)
+corrplot(cor(sbl1),method="circle")// corrplot not installed
+library(car)
+library(carData)
+scatterplot(sbl$Inbound_Date,sbl$Action_Taken_Date)
+cor(sbl$Inbound_Date,sbl$Action_Taken_Date)
+library(rpart)
+fit=rpart(Offer_Status~.,data = sbl,method = "class",control = rpart.control(minsplit = 10,cp=0.01))
+install.packages("rpart.plot")
+library(rpart.plot)
+rpart.plot(fit)
+prp(fit)
+plotcp(fit)
+summary(fit)
+install.packages("installr")
+library(installr) # install+load installr
+
+install.packages("randomForest")
+library(randomForest)
+install.packages("party")
+library(party)
+output.forest<-randomForest(Offer_Status~Action_Taken_Date+Inbound_Date+config_completion_date+notification_3p_date+target_ib_turn_on_date+latest_opr_turn_on_time+first_opr_turn_on_time+latest_ib_turn_on_time+first_ib_turn_on_time,
+                            data=sbl)
+print(output.forest)
+print(importance(fit,type=2))
